@@ -2,11 +2,20 @@ var Note = React.createClass({
     getInitialState: function() {
         return {editing: false}
     },
+    getRandomColor: function() {
+		var letters = '0123456789ABCDEF'.split('');
+		var color = '#';
+		for (var i = 0; i < 6; i++ ) {
+			color += letters[Math.floor(Math.random() * 16)];
+		}
+    	return color;
+    },
     componentWillMount: function() {
         this.style = {
             right: this.randomBetween(0, window.innerWidth - 150) + 'px',
             top: this.randomBetween(0, window.innerHeight - 150) + 'px',
-            transform: 'rotate(' + this.randomBetween(-15, 15) + 'deg)'
+            transform: 'rotate(' + this.randomBetween(-15, 15) + 'deg)',
+            backgroundColor: this.getRandomColor()
         };
     },
     componentDidMount: function(){
@@ -83,11 +92,11 @@ var Board = React.createClass({
          if(this.props.count) {
              $.getJSON("http://baconipsum.com/api/?type=all-meat&sentences=" +
                  this.props.count + "&start-with-lorem=1&callback=?", function(results){
-                     results[0].split('. ').forEach(function(sentence){
+                    results[0].split('. ').forEach(function(sentence){
                          self.add(sentence.substring(0,40));
-                     });
-                 });
-         }
+                    });
+                });
+        }
      },
     add: function(text) {
         var arr = this.state.notes;
